@@ -1,0 +1,1809 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lab-01 · Introduction to project management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark.min.css">
+    <style>
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 4.5rem;
+        }
+
+        body {
+            padding-top: 4rem;
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 4.5rem;
+            max-height: calc(100vh - 5rem);
+            overflow-y: auto;
+        }
+
+        .sidebar .nav-link {
+            padding: .35rem .75rem;
+            border-left: 3px solid transparent;
+            font-size: .9rem;
+        }
+
+        .sidebar .nav-link.active {
+            border-left-color: var(--bs-primary);
+            font-weight: 600;
+        }
+
+        .task {
+            scroll-margin-top: 4.5rem;
+        }
+
+        .task-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: .5rem .75rem;
+        }
+
+        .task-number {
+            width: 2.6rem;
+            height: 2.6rem;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        pre {
+            position: relative;
+            margin: 0;
+            border-radius: .5rem;
+            overflow: hidden;
+        }
+
+        pre code.hljs {
+            padding: 1rem 1.1rem;
+            font-size: .84rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: .4rem;
+            right: .4rem;
+            opacity: 0;
+            transition: opacity .2s;
+            font-size: .7rem;
+            padding: .15rem .45rem;
+        }
+
+        pre:hover .copy-btn {
+            opacity: 1;
+        }
+
+        .hint-btn {
+            text-decoration: none;
+        }
+
+        .check-list .form-check {
+            padding: .35rem 0 .35rem 1.8rem;
+            border-bottom: 1px dashed var(--bs-border-color);
+        }
+
+        .check-list .form-check:last-child {
+            border-bottom: 0;
+        }
+
+        .check-list input:checked+label {
+            text-decoration: line-through;
+            opacity: .6;
+        }
+
+        .progress {
+            height: .5rem;
+        }
+
+        .step-list li {
+            margin-bottom: .4rem;
+        }
+
+        pre.mermaid {
+            background: transparent;
+            text-align: center;
+            overflow: visible;
+        }
+
+        pre.mermaid svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        svg.fig {
+            width: 100%;
+            height: auto;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        }
+
+        .f-box2 {
+            fill: var(--bs-secondary-bg);
+            stroke: var(--bs-border-color);
+            stroke-width: 1.5;
+        }
+
+        .f-pri {
+            fill: rgba(13, 110, 253, .18);
+            stroke: var(--bs-primary);
+            stroke-width: 1.5;
+        }
+
+        .f-suc {
+            fill: rgba(25, 135, 84, .18);
+            stroke: var(--bs-success);
+            stroke-width: 1.5;
+        }
+
+        .f-warn {
+            fill: rgba(255, 193, 7, .18);
+            stroke: var(--bs-warning);
+            stroke-width: 1.5;
+        }
+
+        .f-dan {
+            fill: rgba(220, 53, 69, .18);
+            stroke: var(--bs-danger);
+            stroke-width: 1.5;
+        }
+
+        .f-txt-s {
+            fill: var(--bs-body-color);
+            font-size: 11px;
+        }
+
+        .f-txt-b {
+            fill: var(--bs-body-color);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .f-mut {
+            fill: var(--bs-secondary-color);
+            font-size: 11px;
+        }
+
+        .f-line {
+            stroke: var(--bs-body-color);
+            stroke-width: 1.5;
+            fill: none;
+        }
+
+        .f-line-s {
+            stroke: var(--bs-success);
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .f-line-d {
+            stroke: var(--bs-danger);
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .f-dash {
+            stroke-dasharray: 5 4;
+        }
+
+        @media print {
+
+            .sidebar,
+            .navbar,
+            .copy-btn,
+            .btn-theme {
+                display: none !important;
+            }
+
+            body {
+                padding-top: 0;
+            }
+
+            .collapse {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <defs>
+            <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8"
+                orient="auto-start-reverse">
+                <path d="M0 0L10 5 0 10z" style="fill:var(--bs-body-color)" />
+            </marker>
+            <marker id="arr-s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8"
+                orient="auto-start-reverse">
+                <path d="M0 0L10 5 0 10z" style="fill:var(--bs-success)" />
+            </marker>
+            <marker id="arr-d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8"
+                orient="auto-start-reverse">
+                <path d="M0 0L10 5 0 10z" style="fill:var(--bs-danger)" />
+            </marker>
+        </defs>
+    </svg>
+
+    <nav class="navbar navbar-expand-lg fixed-top border-bottom bg-body-tertiary">
+        <div class="container-xl">
+            <a class="navbar-brand fw-semibold" href="#top"><i class="bi bi-flask text-success"></i> Lab-01 ·
+                Introduction to project management</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNav"
+                aria-controls="topNav" aria-expanded="false" aria-label="Toggle navigation"><span
+                    class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="topNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+                    <li class="nav-item"><a class="nav-link" href="Chapter-01.html"><i class="bi bi-easel"></i> Chapter
+                            slides</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#setup">Setup</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#rubric">Rubric</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#submission">Submission</a></li>
+                    <li class="nav-item"><button class="btn btn-sm btn-outline-secondary btn-theme" id="btnTheme"
+                            title="Toggle light/dark"><i class="bi bi-circle-half"></i></button></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-xl" id="top">
+        <div class="row g-4">
+
+            <!-- ===================== SIDEBAR ===================== -->
+            <aside class="col-lg-3 d-none d-lg-block">
+                <div class="sidebar">
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between small mb-1"><span class="fw-semibold">Your
+                                progress</span><span id="progressText">0 / 0</span></div>
+                        <div class="progress">
+                            <div class="progress-bar bg-success" id="progressBar" style="width:0%"></div>
+                        </div>
+                        <button class="btn btn-link btn-sm p-0 mt-1 text-secondary" id="resetProgress">Reset
+                            checklist</button>
+                    </div>
+                    <nav class="nav flex-column" id="sideNav">
+                        <a class="nav-link" href="#setup">0 · Setup</a>
+                        <a class="nav-link" href="#task1">1 · Project, operation or programme?</a>
+                        <a class="nav-link" href="#task2">2 · Project charter</a>
+                        <a class="nav-link" href="#task3">3 · Sponsor, PM and stakeholders</a>
+                        <a class="nav-link" href="#task4">4 · Business case</a>
+                        <a class="nav-link" href="#task5">5 · Process groups and lab record</a>
+                        <a class="nav-link" href="#challenge">★ Challenge · Failure post-mortem</a>
+                        <a class="nav-link" href="#rubric">Grading rubric</a>
+                        <a class="nav-link" href="#submission">Submission</a>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- ===================== MAIN ===================== -->
+            <main class="col-lg-9">
+
+                <header class="mb-4">
+                    <p class="text-uppercase small text-secondary mb-1" style="letter-spacing:.12em">IT Project
+                        Management · Chapter 01</p>
+                    <h1 class="fw-bold">Lab-01: Project charter for the Realtime Quiz project</h1>
+                    <p class="lead">You write the first project management documents of the Realtime Quiz project; each
+                        later lab adds its own. You classify initiatives as projects, operations or programmes, write
+                        the Realtime Quiz project charter, identify the sponsor, the project manager and the first
+                        stakeholders, justify the investment with a business case, and map the five process groups onto
+                        the 14-week semester. The challenge analyses a famous IT project failure with the chapter's
+                        concepts and turns it into commitments for your own project.</p>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge text-bg-primary">PMBOK Guide 7th ed. · Process Groups Practice Guide
+                            2022</span>
+                        <span class="badge text-bg-secondary">Markdown · spreadsheet · draw.io · Git</span>
+                        <span class="badge text-bg-secondary">≈ 5 hours</span>
+                        <span class="badge text-bg-success">5 tasks + 1 challenge</span>
+                    </div>
+                </header>
+
+                <div class="alert alert-info d-flex gap-2">
+                    <i class="bi bi-info-circle-fill fs-5"></i>
+                    <div><strong>How to work through this lab.</strong> Do the tasks in order; each builds on the
+                        previous. Read the <em>Goal</em>, follow the <em>Steps</em>, compare with the <em>Expected
+                            output</em>, and tick the <em>Acceptance checklist</em> (saved in your browser). Open a hint
+                        only when stuck for more than 10 minutes. Every deliverable is a text file in your Git
+                        repository; commit after each task.</div>
+                </div>
+
+                <!-- ===================== SETUP ===================== -->
+                <section class="task card mb-4" id="setup">
+                    <div class="card-header task-header">
+                        <span class="task-number text-bg-secondary">0</span>
+                        <h2 class="h4 mb-0">Setup</h2>
+                        <span class="badge text-bg-light ms-auto">20 min</span>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="h6 text-uppercase text-secondary">Tools to install (all free)</h3>
+                        <ol class="step-list">
+                            <li><strong>Git</strong> and a GitHub (or GitLab) account. Verify:
+                                <pre><code class="language-bash">git --version        # 2.4x or newer
+git config --global user.name  "Your Name"
+git config --global user.email "you@example.edu"</code></pre>
+                            </li>
+                            <li>A <strong>Markdown editor</strong> with preview and Mermaid support: Visual Studio Code
+                                with the extensions <em>Markdown All in One</em> and <em>Markdown Preview Mermaid
+                                    Support</em>. Any editor works if you can preview tables and Mermaid.</li>
+                            <li>A <strong>spreadsheet</strong>: LibreOffice Calc 24.x or Excel 365 (Task 4). Save as
+                                <code>.csv</code> for Git and keep the <code>.ods</code>/<code>.xlsx</code> next to it
+                                if you use formulas.</li>
+                            <li><strong>draw.io desktop</strong> (diagrams.net 24.x) for the optional organisation
+                                sketch in Task 3. <strong>ProjectLibre 1.9</strong> is not needed until Lab-05; install
+                                it now if you want to be ahead.</li>
+                        </ol>
+
+                        <h3 class="h6 text-uppercase text-secondary mt-3">Case-study recap: the facts every lab uses
+                        </h3>
+                        <p class="small">There are no earlier labs to reuse. Your inputs are the chapter slides and the
+                            case-study brief below; every later lab reuses the files you write here.</p>
+                        <div class="alert alert-secondary small" id="case-brief">
+                            <h4 class="h6 fw-bold mb-2"><i class="bi bi-journal-text"></i> Case-study brief: the
+                                Realtime Quiz platform</h4>
+                            <dl class="row mb-0">
+                                <dt class="col-sm-3">Purpose</dt>
+                                <dd class="col-sm-9">A web platform on which instructors author multiple-choice quizzes
+                                    and host live sessions. Students join with a 6-character code and answer each
+                                    question against a timer; feedback, scores and a leaderboard update instantly over
+                                    WebSocket.</dd>
+                                <dt class="col-sm-3">Roles</dt>
+                                <dd class="col-sm-9">Instructor (creates quizzes, runs sessions, sees analytics, exports
+                                    results); student (joins, answers, sees own score and the leaderboard); guest
+                                    (registers, or joins with a code and a nickname if the instructor allows it); admin
+                                    (manages users and roles; a stretch goal).</dd>
+                                <dt class="col-sm-3">Must features (MVP)</dt>
+                                <dd class="col-sm-9">Create quizzes with multiple-choice questions; real-time
+                                    participation; instant feedback and scoring; leaderboards; real-time updates over
+                                    WebSocket; authentication and roles; timer per question; multiple concurrent
+                                    sessions.</dd>
+                                <dt class="col-sm-3">Should features</dt>
+                                <dd class="col-sm-9">Responsive design; analytics and reporting; export of results to
+                                    CSV and PDF; real-time notifications; multimedia in questions.</dd>
+                                <dt class="col-sm-3">Could features</dt>
+                                <dd class="col-sm-9">Chat during sessions; anonymous joining with a nickname; a question
+                                    bank shared between quizzes; an admin screen for user management.</dd>
+                                <dt class="col-sm-3">Non-goals</dt>
+                                <dd class="col-sm-9">Native mobile apps; question types other than multiple choice (no
+                                    free text); video conferencing; LMS integration; multi-node scaling (one server
+                                    instance).</dd>
+                                <dt class="col-sm-3">Quality targets</dt>
+                                <dd class="col-sm-9">A broadcast reaches all clients within 500 ms; one instance serves
+                                    20 sessions of 100 participants on 2 vCPU and 2 GB RAM; the server's timer is
+                                    authoritative (client drift under 200 ms); WCAG AA contrast and keyboard access;
+                                    last two versions of the major browsers; no secrets in the repository; line coverage
+                                    80 % or more with CI green on every merge.</dd>
+                                <dt class="col-sm-3">Build phases</dt>
+                                <dd class="col-sm-9">Ten phases: setup; accounts and security; quiz authoring; live
+                                    session core; scoring and leaderboard (MVP checkpoint); analytics and export;
+                                    notifications, media, polish; chat and stretch; testing and hardening with a load
+                                    test of 100 simulated students; documentation and demo. Each phase ends with a
+                                    tagged commit and a short demo.</dd>
+                                <dt class="col-sm-3">Technology and deployment</dt>
+                                <dd class="col-sm-9">Spring Boot (Java), PostgreSQL, WebSocket with STOMP; Docker
+                                    Compose behind a Caddy reverse proxy that terminates TLS and forwards WebSocket
+                                    upgrades; configuration through environment variables; hosted on a Linode VPS at
+                                    gicitc.com.</dd>
+                                <dt class="col-sm-3">Known risks</dt>
+                                <dd class="col-sm-9">The campus proxy may block WebSocket (fallback: SockJS); Spring
+                                    Boot 4 and Spring Security 7 are newer than most tutorials; late answers may race
+                                    with the closing of a question; client clocks drift from the server; the PDF export
+                                    must render Khmer names; Could features may creep into the MVP.</dd>
+                                <dt class="col-sm-3">Team and constraints</dt>
+                                <dd class="col-sm-9">4 students (backend, real-time, frontend, QA/DevOps) with the
+                                    lecturer as project manager; 14 weeks from 2026-09-29; MVP demo in week 7; pilot
+                                    with 50 students in week 14; hosting about 25 USD per month within a 200 USD cash
+                                    cap.</dd>
+                            </dl>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered small">
+                                <thead class="table-active">
+                                    <tr>
+                                        <th>Input</th>
+                                        <th>Value to use</th>
+                                        <th>Source</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Product</td>
+                                        <td>Realtime Quiz platform: instructors author quizzes and drive live, timed
+                                            sessions; students join by code, answer, see scores and a leaderboard</td>
+                                        <td>Case-study brief, purpose</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sponsor</td>
+                                        <td>Head of the IT department</td>
+                                        <td>Course brief</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Project manager</td>
+                                        <td>Supervising lecturer</td>
+                                        <td>Course brief</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Team</td>
+                                        <td>4 students (backend, real-time, frontend, QA/DevOps)</td>
+                                        <td>Course brief</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Duration</td>
+                                        <td>14 weeks, week 1 starts 2026-09-29</td>
+                                        <td>Course brief, case-study brief</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Effort</td>
+                                        <td>Students 8 h/week each, PM 3 h/week (490 h total)</td>
+                                        <td>Chapter 01, slide 20</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cash</td>
+                                        <td>Linode VPS at gicitc.com about 25 USD/month, a domain, optional paid tools;
+                                            about 200 USD cap</td>
+                                        <td>Course brief</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Go-live</td>
+                                        <td>Pilot with 50 students in week 14; MVP (all Must features) demo in week 7
+                                        </td>
+                                        <td>Course brief, case-study brief</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Non-goals</td>
+                                        <td>Native apps, other question types, video conferencing, LMS integration,
+                                            multi-node scaling</td>
+                                        <td>Case-study brief, non-goals</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3 class="h6 text-uppercase text-secondary mt-3">Repository and folder layout</h3>
+                        <ol class="step-list">
+                            <li>Create a repository <code>pm-plan-&lt;yourname&gt;</code> with a <code>README.md</code>
+                                (your name, course, one line per lab as you complete it). Clone it and create the branch
+                                <code>lab-01</code>.</li>
+                            <li>Create the folder <code>lab01/</code>. The files you will produce in this lab:
+                                <pre><code class="language-plaintext">pm-plan-&lt;yourname&gt;/
+├── README.md
+└── lab01/
+    ├── task1-classification.md       (Task 1)
+    ├── project-charter.md            (Task 2)
+    ├── stakeholders.csv              (Task 3)
+    ├── stakeholders.md               (Task 3)
+    ├── business-case.md              (Task 4)
+    ├── business-case.csv             (Task 4)
+    ├── process-groups.md             (Task 5)
+    ├── README.md                     (Task 5: lab record)
+    └── post-mortem.md                (Challenge)</code></pre>
+                            </li>
+                            <li>Commit the empty folder with a <code>.gitkeep</code> or the README change: <code>git add
+                                    -A &amp;&amp; git commit -m "Lab-01: setup"</code>.</li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- ===================== TASK 1 ===================== -->
+                <section class="task card mb-4" id="task1">
+                    <div class="card-header task-header">
+                        <span class="task-number text-bg-primary">1</span>
+                        <h2 class="h4 mb-0">Project, operation or programme? Classify ten initiatives</h2>
+                        <span class="badge text-bg-success">Easy</span>
+                        <span class="badge text-bg-light ms-auto">30 min</span>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="h6 text-uppercase text-secondary">Goal</h3>
+                        <p>Apply the definitions from the chapter (temporary, unique result, coordinated benefits) to
+                            ten initiatives of the IT department and justify each classification in one sentence, so
+                            that you can recognise what the rest of the course applies to.</p>
+
+                        <h3 class="h6 text-uppercase text-secondary">Steps</h3>
+                        <ol class="step-list">
+                            <li>Create <code>lab01/task1-classification.md</code> from the starter below. Keep the ten
+                                initiatives exactly as given; do not rewrite them.</li>
+                            <li>For each initiative answer the three test questions in the columns <em>Temporary?</em>
+                                (has a definite end: yes/no), <em>Unique?</em> (the result did not exist before:
+                                yes/no), <em>Coordinated?</em> (several related projects whose benefit exists only
+                                together: yes/no).</li>
+                            <li>Fill the <em>Class</em> column with exactly one of <code>Project</code>,
+                                <code>Operation</code>, <code>Programme</code>. Two yeses on temporary and unique make a
+                                project; a no on either makes an operation; a yes on coordinated makes a programme.</li>
+                            <li>Write one sentence of <em>Justification</em> per row that names the deciding fact (the
+                                deadline, the repetition, the shared benefit). "Because it is a project" is not a
+                                justification.</li>
+                            <li>Below the table add a section <code>## Grey zones</code> with two initiatives from the
+                                list that could be argued either way, and state which extra information (who authorised
+                                it, what "done" means, is there a budget) would settle it.</li>
+                            <li>Add a section <code>## What our project hands over</code>: three sentences on which
+                                operations the Realtime Quiz project hands over to at go-live in week 14 (who runs it,
+                                what they need from the team).</li>
+                            <li>Commit: <code>git commit -am "Lab-01 Task 1: classification"</code>.</li>
+                        </ol>
+
+                        <h3 class="h6 text-uppercase text-secondary">Starter: <code>lab01/task1-classification.md</code>
+                        </h3>
+                        <pre><code class="language-markdown"># Task 1: project, operation or programme?
+
+| #  | Initiative | Temporary? | Unique? | Coordinated? | Class | Justification |
+|----|------------|------------|---------|--------------|-------|---------------|
+| 1  | Build the Realtime Quiz platform and pilot it with 50 students in week 14 | | | | | |
+| 2  | Run the nightly backup of the gicitc.com PostgreSQL database | | | | | |
+| 3  | Move the department's three web servers to a new Linode region before 15 December | | | | | |
+| 4  | Answer helpdesk tickets within the 4-hour service level | | | | | |
+| 5  | "Digital classroom": Realtime Quiz, LMS upgrade and lecture capture sharing one login and one grade export | | | | | |
+| 6  | Apply the monthly security patches to the VPS | | | | | |
+| 7  | Add multi-node scaling (RabbitMQ relay, Redis registry) to Realtime Quiz next semester | | | | | |
+| 8  | Operate the Realtime Quiz platform after go-live: password resets, restarts, monitoring | | | | | |
+| 9  | Write and publish the department's annual IT report for the dean by 31 January | | | | | |
+| 10 | Replace 40 wireless access points in two buildings during the summer break | | | | | |
+
+## Grey zones
+TODO: two rows that could go either way and what would settle them.
+
+## What our project hands over
+TODO: three sentences.</code></pre>
+
+                        <h3 class="h6 text-uppercase text-secondary mt-3">Expected output (two rows of a good answer)
+                        </h3>
+                        <pre><code class="language-plaintext">| 2 | Run the nightly backup ... | no | no | no | Operation |
+    Repeats every night with the same output and no end date;
+    it is part of keeping the service running.
+
+| 5 | "Digital classroom": ... | yes | yes | yes | Programme |
+    Three related projects; the shared login and grade export are a
+    benefit that none of them delivers alone, so they are coordinated.
+
+Grey zones: 7 (is it a maintenance release or a new project? depends on
+whether the sponsor funds it as a separate endeavour with its own end)
+and 9 (annual and repetitive, yet each report is unique with a deadline;
+most departments treat it as a small yearly project).</code></pre>
+
+                        <p class="mt-3"><a class="hint-btn" data-bs-toggle="collapse" href="#hint1" role="button"><i
+                                    class="bi bi-lightbulb"></i> Show hints</a></p>
+                        <div class="collapse" id="hint1">
+                            <div class="card card-body bg-body-tertiary small">
+                                <ul class="mb-0">
+                                    <li>Slide 6 of the chapter classifies eight similar initiatives; do not copy its
+                                        sentences, but use its two-question test.</li>
+                                    <li>"Has a deadline" is not the same as "temporary". Helpdesk tickets have a 4-hour
+                                        deadline each, but the service never ends.</li>
+                                    <li>A programme still contains projects: row 5 is a programme, row 1 is one of its
+                                        projects. Both classifications are correct at their own level.</li>
+                                    <li>Row 8 is what row 1 hands over to. Use it in the last section.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <h3 class="h6 text-uppercase text-secondary mt-3">Acceptance checklist</h3>
+                        <div class="check-list" data-task="t1">
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="t1a"><label
+                                    class="form-check-label" for="t1a">All ten rows have yes/no in the three test
+                                    columns and exactly one class from Project, Operation, Programme.</label></div>
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="t1b"><label
+                                    class="form-check-label" for="t1b">Every justification names the deciding fact (end
+                                    date, repetition or shared benefit) in one sentence.</label></div>
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="t1c"><label
+                                    class="form-check-label" for="t1c">The grey-zone section names two rows and the
+                                    information that would settle each.</label></div>
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="t1d"><label
+                                    class="form-check-label" for="t1d">The hand-over section names who operates Realtime
+                                    Quiz after week 14 and what they need; the file renders as a table in the Markdown
+                                    preview.</label></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== TASK 2 ===================== -->
+                <section class="task card mb-4" id="task2">
+                    <div class="card-header task-header">
+                        <span class="task-number text-bg-primary">2</span>
+                        <h2 class="h4 mb-0">Write the Realtime Quiz project charter</h2>
+                        <span class="badge text-bg-warning text-dark">Medium</span>
+                        <span class="badge text-bg-light ms-auto">60 min</span>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="h6 text-uppercase text-secondary">Goal</h3>
+                        <p>Produce the one document that authorises the project: purpose, SMART objectives with success
+                            criteria, scope in and out, milestones, budget summary in person-hours and USD, assumptions,
+                            constraints and the project manager's authority, ready for the sponsor's signature.</p>
+
+                        <h3 class="h6 text-uppercase text-secondary">Steps</h3>
+                        <ol class="step-list">
+                            <li>Create <code>lab01/project-charter.md</code> from the template below. Fill the header
+                                (version 1.0, date, sponsor, PM).</li>
+                            <li><strong>Purpose and justification</strong>: 3-5 sentences: the problem (marking load, no
+                                live feedback), the product, the benefit; reference <code>business-case.md</code> (Task
+                                4) by file name.</li>
+                            <li><strong>Objectives</strong>: exactly five rows <code>O1</code>-<code>O5</code>. Each
+                                objective has a number and a date or week in its success criterion. Use the quality
+                                targets of the case-study brief above for at least two (latency, capacity, coverage) and
+                                the pilot for one.</li>
+                            <li><strong>Scope</strong>: at least five <em>In</em> items taken from the Must and Should
+                                features and at least four <em>Out</em> items taken from the Non-goals. Every item is a
+                                noun phrase (a deliverable), not a technology choice.</li>
+                            <li><strong>Milestones</strong>: seven rows, weeks 1 to 14, each with the process group it
+                                ends. Week 7 must be the MVP demo and week 14 the pilot; the other five come from the
+                                build phases of the case-study brief above compressed into 14 weeks.</li>
+                            <li><strong>Budget summary</strong>: write the calculation lines, not only the totals:
+                                <code>students 4 x 14 x 8 = 448 h</code>, <code>PM 14 x 3 = 42 h</code>, hosting,
+                                domain, tools, reserve. State the reserve as a percentage of the cash lines.</li>
+                            <li><strong>Assumptions</strong> (at least three), <strong>constraints</strong> (at least
+                                three, including the 14 weeks and the cash cap), <strong>authority</strong> (what the PM
+                                may decide alone, what needs the sponsor), an approval block. Commit: <code>git commit
+                                    -am "Lab-01 Task 2: charter"</code>.</li>
+                        </ol>
+
+                        <h3 class="h6 text-uppercase text-secondary">Starter template:
+                            <code>lab01/project-charter.md</code></h3>
+                        <pre><code class="language-markdown"># Project charter: Realtime Quiz platform
+
+| Field    | Value                              |
+|----------|------------------------------------|
+| Version  | 1.0 (draft for sponsor approval)   |
+| Date     | 2026-09-29                         |
+| Sponsor  | Head of the IT department          |
+| PM       | TODO name, supervising lecturer    |
+
+## 1. Purpose and justification
+TODO 3-5 sentences. See business-case.md.
+
+## 2. Objectives and success criteria
+| #  | Objective (what will be true)      | Success criterion (number + week) |
+|----|------------------------------------|-----------------------------------|
+| O1 | TODO                               | TODO                              |
+| O2 | TODO                               | TODO                              |
+| O3 | TODO                               | TODO                              |
+| O4 | TODO                               | TODO                              |
+| O5 | TODO                               | TODO                              |
+
+## 3. High-level scope
+In scope:
+- TODO (at least 5 deliverables from the Must and Should lists)
+Out of scope:
+- TODO (at least 4 items from the Non-goals)
+
+## 4. Milestones
+| Week | Milestone                          | Ends process group |
+|------|------------------------------------|--------------------|
+| 1    | Charter approved, team formed      | Initiating         |
+| TODO |                                    |                    |
+| 7    | MVP demo                           | Executing          |
+| TODO |                                    |                    |
+| 14   | Pilot with 50 students, closure    | Closing            |
+
+## 5. Budget summary
+Effort:  students 4 x 14 x 8 h = ___ h; PM 14 x 3 h = ___ h; total ___ h
+Cash:    hosting __ x 25 USD = ___; domain ___; tools ___; reserve ___ (__ %)
+         total ___ USD
+
+## 6. Assumptions
+- TODO (at least 3)
+## 7. Constraints
+- TODO (at least 3)
+## 8. High-level risks
+- TODO (2-3, from the known risks in the case-study brief)
+## 9. Project manager authority
+TODO: decides alone / needs sponsor approval.
+## 10. Approval
+Sponsor: ____________________  Date: ________
+PM:      ____________________  Date: ________</code></pre>
+
+                        <h3 class="h6 text-uppercase text-secondary mt-3">Expected output (excerpt of a good charter)
+                        </h3>
+                        <pre><code class="language-plaintext">| O2 | Pilot with 50 students in one live session | 50 participants, 0 blocking |
+|    |                                            | defects, week 14            |
+| O3 | Broadcast latency during the pilot         | &lt;= 500 ms at the 95th       |
+|    |                                            | percentile, measured week 14|
+
+Effort:  students 4 x 14 x 8 h = 448 h; PM 14 x 3 h = 42 h; total 490 h
+Cash:    hosting 4 x 25 USD = 100; domain 15; tools 60; reserve 25 (14 %)
+         total 200 USD
+
+Authority: the PM re-plans within the 490 h and 200 USD without approval;
+adding scope, moving the pilot or spending beyond the reserve needs the
+sponsor's written approval within 5 working days.</code></pre>
+
+                        <p class="mt-3"><a class="hint-btn" data-bs-toggle="collapse" href="#hint2" role="button"><i
+                                    class="bi bi-lightbulb"></i> Show hints</a></p>
+                        <div class="collapse" id="hint2">
+                            <div class="card card-body bg-body-tertiary small">
+                                <ul class="mb-0">
+                                    <li>Slides 19 and 20 show a complete excerpt. Your charter must differ in at least
+                                        the milestone wording and the assumptions; copying the slide verbatim scores the
+                                        "objectives without numbers" deduction if you forget to check them.</li>
+                                    <li>Test each objective with the SMART table on slide 19: if you cannot say who
+                                        measures it and when, rewrite it.</li>
+                                    <li>Milestone weeks: compress the ten build phases of the case-study brief (12
+                                        weeks) into 14: setup and accounts by week 2-3, authoring by week 4, live
+                                        session core by week 6, MVP demo week 7, analytics and export by week 10,
+                                        hardening and load test by week 12, documentation week 13, pilot week 14.</li>
+                                    <li>"Use Spring Boot 4.1" is a constraint, not a scope item. "Quiz editor page" is a
+                                        scope item.</li>
+                                    <li>Assumptions are things you believe without proof (students give 8 h/week).
+                                        Constraints are limits imposed from outside (14 weeks, 200 USD, student data
+                                        stays on campus).</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <h3 class="h6 text-uppercase text-secondary mt-3">Acceptance checklist</h3>
+                        <div class="check-list" data-task="t2">
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="t2a"><label
+                                    class="form-check-label" for="t2a">Five objectives O1-O5, each with a success
+                                    criterion containing a number and a week; at least two come from the non-functional
+                                    requirements.</label></div>
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="t2b"><label
+                                    class="form-check-label" for="t2b">At least 5 in-scope and 4 out-of-scope items, all
+                                    deliverables (noun phrases), none a technology choice.</label></div>
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="t2c"><label
+                                    class="form-check-label" for="t2c">Seven milestones from week 1 to 14 with a process
+                                    group each; MVP demo in week 7, pilot in week 14.</label></div>
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="t2d"><label
+                                    class="form-check-label" for="t2d">Budget summary shows the calculation lines in
+                                    person-hours and USD with a reserve; assumptions, constraints, authority and
+                                    approval block are filled.</label></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== TASK 3 ===================== -->
+                <section class="task card mb-4" id="task3">
+                    <div class="card-header task-header">
+                        <span class="task-number text-bg-primary">3</span>
+                        <h2 class="h4 mb-0">Identify the sponsor, the project manager and the first stakeholders</h2>
+                        <span class="badge text-bg-warning text-dark">Medium</span>
+                        <span class="badge text-bg-light ms-auto">45 min</span>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="h6 text-uppercase text-secondary">Goal</h3>
+                        <p>Build the first stakeholder list of the project: who funds it, who manages it, and 8 to 12
+                            people or groups who affect or are affected by it, each with their role, interest, influence
+                            and expectation. Lab-11 will refine this list into a stakeholder register and an engagement
+                            plan; here it must be complete, not deep.</p>
+
+                        <h3 class="h6 text-uppercase text-secondary">Steps</h3>
+                        <ol class="step-list">
+                            <li>Create <code>lab01/stakeholders.csv</code> with the header row of the starter. Column
+                                meanings: <code>category</code> is one of <code>sponsor, pm, team, user, operations,
+                                    governance, external</code>; <code>influence</code> and <code>interest_level</code>
+                                are <code>H</code>, <code>M</code> or <code>L</code>; <code>interest</code> is what they
+                                want from the project in one phrase; <code>expectation</code> is what they expect to
+                                receive or see, in one sentence.</li>
+                            <li>Row 1 is the sponsor (Head of the IT department), row 2 the project manager (the
+                                supervising lecturer). Give both a concrete expectation (what the sponsor expects at
+                                week 7 and week 14; what the PM expects from the sponsor).</li>
+                            <li>Add the four students as one row (<code>team</code>) or four rows if their interests
+                                differ (the QA/DevOps student has a different interest from the frontend student).</li>
+                            <li>Add users and operations from the roles and deployment in the case-study brief above:
+                                the 50 pilot students, the lecturers who will run quizzes, IT operations (the VPS at
+                                gicitc.com, backups), the campus network administrator (WebSocket through the proxy).
+                            </li>
+                            <li>Add governance and external stakeholders: the Software Engineering lecturer (owns the
+                                capstone), the data protection officer or registrar (student data), the dean or faculty
+                                management (adoption next semester), a SaaS vendor if the business case (Task 4) keeps
+                                option B open.</li>
+                            <li>Write <code>lab01/stakeholders.md</code>: a paragraph naming the two stakeholders with
+                                high influence and high interest and why they get the PM's attention first, and one
+                                sentence on a stakeholder who could stop the project (a "veto" stakeholder).</li>
+                            <li>Optional: sketch the organisation (sponsor, PM, team, users, operations) in draw.io,
+                                export <code>lab01/organisation.png</code>. Commit: <code>git commit -am "Lab-01 Task 3:
+                                    stakeholders"</code>.</li>
+                        </ol>
+
+                        <h3 class="h6 text-uppercase text-secondary">Starter: <code>lab01/stakeholders.csv</code></h3>
+                        <pre><code class="language-plaintext">id,name_or_group,role,category,interest,influence,interest_level,expectation
+S01,Head of the IT department,Sponsor,sponsor,TODO,H,H,TODO
+S02,TODO name,Project manager (supervising lecturer),pm,TODO,H,H,TODO
+S03,Student team (4),Developers and testers,team,TODO,M,H,TODO
+S04,Pilot students (50),End users,user,TODO,L,M,TODO
+S05,TODO,,,,,,
+S06,TODO,,,,,,
+S07,TODO,,,,,,
+S08,TODO,,,,,,</code></pre>
+
+                        <h3 class="h6 text-uppercase text-secondary mt-3">Expected output (three rows of a good list)
+                        </h3>
+                        <pre><code class="language-plaintext">S01,Head of the IT department,Sponsor,sponsor,a reusable quiz tool that
+  saves marking time and shows the department innovates,H,H,MVP demo in
+  week 7 and a pilot with 50 students in week 14 within 200 USD cash
+S06,IT operations (VPS admin),Runs gicitc.com hosting and backups,
+  operations,no surprises at go-live; a runbook and a backup job,M,M,
+  a deployment checklist and the docker-compose.prod.yml two weeks before
+  the pilot
+S09,Data protection officer,Approves storage of student data,governance,
+  student names and results stored on campus with a retention rule,H,L,
+  a one-page data description before the pilot; can block the pilot
+
+stakeholders.md: S01 and S09 are high influence; S09 is the veto
+stakeholder because the pilot cannot run without data approval.</code></pre>
+
+                        <p class="mt-3"><a class="hint-btn" data-bs-toggle="collapse" href="#hint3" role="button"><i
+                                    class="bi bi-lightbulb"></i> Show hints</a></p>
+                        <div class="collapse" id="hint3">
+                            <div class="card card-body bg-body-tertiary small">
+                                <ul class="mb-0">
+                                    <li>Read the roles (instructor, student, guest, admin), the technology and
+                                        deployment (VPS, Caddy, environment variables) and the known risks (campus proxy
+                                        blocks WebSocket) in the case-study brief above: each names a stakeholder.</li>
+                                    <li>Influence is the power to change the project's course; interest level is how
+                                        much they care day to day. A dean has high influence and low interest; a pilot
+                                        student the opposite.</li>
+                                    <li>Keep commas out of the cell text or quote the cell (<code>"a, b"</code>);
+                                        otherwise the CSV breaks. Preview it in Calc.</li>
+                                    <li>Twelve rows is the maximum here; Lab-11 will add power/interest positioning and
+                                        engagement levels (unaware to leading).</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <h3 class="h6 text-uppercase text-secondary mt-3">Acceptance checklist</h3>
+                        <div class="check-list" data-task="t3">
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="t3a"><label
+                                    class="form-check-label" for="t3a">8 to 12 rows with all eight columns filled; row
+                                    S01 is the sponsor and S02 the project manager.</label></div>
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="t3b"><label
+                                    class="form-check-label" for="t3b">Every category from the list appears at least
+                                    once: sponsor, pm, team, user, operations, governance (external is
+                                    optional).</label></div>
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="t3c"><label
+                                    class="form-check-label" for="t3c">Influence and interest level use only H, M, L;
+                                    every expectation is a full sentence naming a deliverable or an event.</label></div>
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="t3d"><label
+                                    class="form-check-label" for="t3d"><code>stakeholders.md</code> names the two
+                                    priority stakeholders and one veto stakeholder with reasons; the CSV opens cleanly
+                                    in a spreadsheet.</label></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== TASK 4 ===================== -->
+                <section class="task card mb-4" id="task4">
+                    <div class="card-header task-header">
+                        <span class="task-number text-bg-primary">4</span>
+                        <h2 class="h4 mb-0">Write the business case: do nothing, buy a SaaS, or build</h2>
+                        <span class="badge text-bg-warning text-dark">Medium</span>
+                        <span class="badge text-bg-light ms-auto">60 min</span>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="h6 text-uppercase text-secondary">Goal</h3>
+                        <p>Justify the investment with numbers: state the problem, compare three options including
+                            buying a Kahoot-like SaaS against building Realtime Quiz, price costs and benefits in a
+                            small spreadsheet with formulas, compute the payback period and recommend one option with
+                            the conditions under which the sponsor should switch.</p>
+
+                        <h3 class="h6 text-uppercase text-secondary">Steps</h3>
+                        <ol class="step-list">
+                            <li>Create <code>lab01/business-case.md</code> from the starter. In
+                                <strong>Problem</strong>, quantify the pain: how many lecturers, how many hours of
+                                marking per week, how many weeks per year (state your assumptions in a bullet list; the
+                                chapter used 10 lecturers, 1 h/week, 30 weeks).</li>
+                            <li>Describe three <strong>options</strong>: A do nothing, B buy a quiz SaaS (research one
+                                real product's education pricing and cite the page and date; if you cannot, use 15 USD
+                                per lecturer per month and say it is an assumption), C build Realtime Quiz with the
+                                charter budget.</li>
+                            <li>Create <code>lab01/business-case.csv</code> with the layout below (one row per cost or
+                                benefit line, columns <code>option, line, quantity, unit_cost, per_year, amount,
+                                    formula</code>). Fill <code>amount</code> with the computed value and
+                                <code>formula</code> with the spreadsheet formula you used, written out (for example
+                                <code>=C4*D4</code>).</li>
+                            <li>Compute for B and C: one-off cost, annual cost, annual benefit, <strong>net annual
+                                    benefit</strong> and <strong>payback in years</strong> = one-off cost / net annual
+                                benefit. Change one assumption (for example 6 lecturers instead of 10) and show the
+                                payback again: this is your sensitivity line.</li>
+                            <li>Write <strong>Benefits not priced</strong> (learning outcome, data ownership, no
+                                per-seat limit) and <strong>Risks per option</strong> (at least two each; take C's from
+                                the known risks in the case-study brief).</li>
+                            <li>Write the <strong>Recommendation</strong>: which option, the payback, and the review
+                                gate ("if the MVP demo in week 7 fails, switch to B for next semester"). Link the
+                                recommendation from the charter's purpose section.</li>
+                            <li>Commit: <code>git commit -am "Lab-01 Task 4: business case"</code>.</li>
+                        </ol>
+
+                        <h3 class="h6 text-uppercase text-secondary">Starter: <code>lab01/business-case.md</code> and
+                            the CSV layout</h3>
+                        <pre><code class="language-markdown"># Business case: live quizzes for the IT department
+
+## 1. Problem
+TODO: who suffers, how much, how often. Assumptions:
+- lecturers running quizzes: __
+- marking time per lecturer per week: __ h
+- teaching weeks per year: __
+- notional value of one hour: 10 USD (students are unpaid; used to compare)
+
+## 2. Options
+| Option | Description | One-off cost | Annual cost | Annual benefit |
+|--------|-------------|--------------|-------------|----------------|
+| A      | Do nothing  | 0            | 0           | 0              |
+| B      | Buy SaaS    | TODO         | TODO        | TODO           |
+| C      | Build       | TODO         | TODO        | TODO           |
+
+## 3. Comparison
+| Option | Net annual benefit | Payback (years) | Sensitivity (__ lecturers) |
+|--------|--------------------|-----------------|----------------------------|
+| B      | TODO               | TODO            | TODO                       |
+| C      | TODO               | TODO            | TODO                       |
+
+## 4. Benefits not priced
+## 5. Risks per option
+## 6. Recommendation and review gate</code></pre>
+                        <pre><code class="language-plaintext">business-case.csv (columns; one line per cost or benefit)
+option,line,quantity,unit_cost,per_year,amount,formula
+B,SaaS licence,10,15,12,1800,=C2*D2*E2
+C,Student and PM effort (one-off),490,10,1,4900,=C3*D3
+C,Hosting,12,25,1,300,=C4*D4*E4
+B,Marking time saved,300,10,1,3000,=C5*D5
+C,Marking time saved,300,10,1,3000,=C6*D6
+C,SaaS fee avoided,1,1800,1,1800,=C7*D7
+C,Net annual benefit,,,,4500,=F6+F7-F4
+C,Payback years,,,,1.09,=F3/F8</code></pre>
+
+                        <h3 class="h6 text-uppercase text-secondary mt-3">Expected output (comparison and recommendation
+                            of a good answer)</h3>
+                        <pre><code class="language-plaintext">| Option | Net annual benefit | Payback (years) | Sensitivity (6 lecturers) |
+| B      | 3,000 - 1,800 = 1,200 | 0 (no one-off) | 1,800 - 1,080 = 720   |
+| C      | 3,000 + 1,800 - 300 = 4,500 | 4,900 / 4,500 = 1.1 | 2,880: 1.7 |
+
+Recommendation: option C. Payback within two academic years even with
+6 lecturers; the department keeps its data and the capstone learning
+outcome. Review gate: if the week-7 MVP demo fails, buy option B for the
+next semester and treat the build as a two-semester project.</code></pre>
+
+                        <p class="mt-3"><a class="hint-btn" data-bs-toggle="collapse" href="#hint4" role="button"><i
+                                    class="bi bi-lightbulb"></i> Show hints</a></p>
+                        <div class="collapse" id="hint4">
+                            <div class="card card-body bg-body-tertiary small">
+                                <ul class="mb-0">
+                                    <li>Slide 21 walks through the same numbers. Your version must add the sensitivity
+                                        line and the risks per option, and cite or flag the SaaS price.</li>
+                                    <li>Option B has no one-off cost, so its payback is immediate; that is exactly why
+                                        sponsors like buying. Your case for C rests on the fee avoided over several
+                                        years and the unpriced benefits: say so.</li>
+                                    <li>Net annual benefit for C = benefit + fee avoided - hosting. Do not subtract the
+                                        one-off effort from an annual figure.</li>
+                                    <li>In Calc, enter the formulas in a real sheet, then copy the results into the CSV
+                                        and write the formula text in the last column; the grader checks that the amount
+                                        matches the formula.</li>
+                                    <li>Keep every figure with its unit (USD, h, years). A number without a unit is not
+                                        evidence.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <h3 class="h6 text-uppercase text-secondary mt-3">Acceptance checklist</h3>
+                        <div class="check-list" data-task="t4">
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="t4a"><label
+                                    class="form-check-label" for="t4a">The problem is quantified with stated
+                                    assumptions; three options A, B, C are described, and the SaaS price is cited or
+                                    flagged as an assumption.</label></div>
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="t4b"><label
+                                    class="form-check-label" for="t4b"><code>business-case.csv</code> has every cost and
+                                    benefit line with quantity, unit cost, amount and the written-out formula; amounts
+                                    match the formulas.</label></div>
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="t4c"><label
+                                    class="form-check-label" for="t4c">Net annual benefit and payback are computed for B
+                                    and C, plus one sensitivity variant with a changed assumption.</label></div>
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="t4d"><label
+                                    class="form-check-label" for="t4d">Risks per option (at least two each), unpriced
+                                    benefits, a recommendation and a review gate tied to the week-7 MVP demo; the
+                                    charter purpose links to this file.</label></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== TASK 5 ===================== -->
+                <section class="task card mb-4" id="task5">
+                    <div class="card-header task-header">
+                        <span class="task-number text-bg-primary">5</span>
+                        <h2 class="h4 mb-0">Map the process groups to the semester and record the lab</h2>
+                        <span class="badge text-bg-danger">Hard</span>
+                        <span class="badge text-bg-light ms-auto">60 min</span>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="h6 text-uppercase text-secondary">Goal</h3>
+                        <p>Show when each of the five process groups is active across the 14 weeks (they overlap and
+                            repeat) in a table and a Mermaid Gantt chart, then create <code>lab01/README.md</code>, the
+                            record of this lab: which files it produced, which inputs it reused and what changed. Every
+                            later lab keeps the same record in its own folder.</p>
+
+                        <h3 class="h6 text-uppercase text-secondary">Steps</h3>
+                        <ol class="step-list">
+                            <li>Create <code>lab01/process-groups.md</code>. Write a table with the columns <em>Process
+                                    group</em>, <em>Weeks active</em>, <em>Main activities</em>, <em>Outputs</em>,
+                                <em>Lab that produces them</em>. Monitoring and controlling must span weeks 1 to 14;
+                                planning must have a first burst (weeks 1-3) and a continuing re-planning line.</li>
+                            <li>Below the table add a Mermaid <code>gantt</code> from the starter: one
+                                <code>section</code> per process group, dates computed from week 1 = 2026-09-29 (week n
+                                starts 7 × (n - 1) days later), the MVP demo (week 7) and the pilot (week 14) as
+                                <code>milestone</code> entries. Preview it; fix any parse error before committing.</li>
+                            <li>Add a paragraph <code>## Phase gates</code>: three points in time where the sponsor
+                                decides to continue, change or stop (charter approval week 1, MVP demo week 7, pilot
+                                readiness week 13), and what evidence each gate needs (PRINCE2's continued business
+                                justification).</li>
+                            <li><strong>Record what changed.</strong> Create <code>lab01/README.md</code> from the
+                                starter: a document-control table (version, date, author, status), a <em>Files</em>
+                                table with one row per Lab-01 file (path and a one-line description), an <em>Inputs
+                                    reused</em> table (for this first lab a single row: chapter slides and the
+                                case-study brief) and a <em>Change log</em> with the first row: date, version 0.1,
+                                "Lab-01: charter, stakeholders, business case, process-group mapping added". Every later
+                                lab keeps the same three tables in its own folder and appends one change-log row per
+                                change.</li>
+                            <li>Update the root <code>README.md</code> with a line "Lab-01 completed: charter,
+                                stakeholders, business case, process groups (see lab01/README.md)". Commit: <code>git
+                                    commit -am "Lab-01 Task 5: process groups and lab record"</code>.</li>
+                        </ol>
+
+                        <h3 class="h6 text-uppercase text-secondary">Starter: Gantt source for
+                            <code>lab01/process-groups.md</code></h3>
+                        <pre><code class="language-markdown">## Process groups over the semester
+```mermaid
+gantt
+  title Process groups over the 14-week semester (Realtime Quiz)
+  dateFormat YYYY-MM-DD
+  axisFormat %d %b
+  section Initiating
+  Charter, stakeholders, business case   :i1, 2026-09-29, 7d
+  section Planning
+  PM plan and subsidiary plans           :p1, 2026-09-29, 21d
+  Re-planning after each status review   :p2, TODO, TODOd
+  section Executing
+  Build to MVP (Must features)           :e1, 2026-10-13, 35d
+  MVP demo                               :milestone, m1, 2026-11-13, 0d
+  Should and Could features, hardening   :e2, TODO, TODOd
+  section Monitoring and controlling
+  Weekly status, variance, change log    :m2, 2026-09-29, 98d
+  section Closing
+  Pilot with 50 students, lessons learned :c1, TODO, 7d
+```</code></pre>
+
+                        <h3 class="h6 text-uppercase text-secondary mt-3">Starter: <code>lab01/README.md</code></h3>
+                        <pre><code class="language-markdown"># Lab-01: project charter and initiation · Realtime Quiz
+
+| Field   | Value                     |
+|---------|---------------------------|
+| Version | 0.1                       |
+| Date    | TODO                      |
+| Author  | TODO                      |
+| Status  | Draft                     |
+
+## Files
+| File                          | What it contains (one line)                    |
+|-------------------------------|------------------------------------------------|
+| lab01/task1-classification.md | ten initiatives classified with a deciding fact |
+| lab01/project-charter.md      | TODO                                            |
+| lab01/stakeholders.csv        | TODO                                            |
+| lab01/stakeholders.md         | TODO                                            |
+| lab01/business-case.md        | TODO                                            |
+| lab01/business-case.csv       | TODO                                            |
+| lab01/process-groups.md       | TODO                                            |
+
+## Inputs reused
+| Input                                   | Version / tag |
+|-----------------------------------------|---------------|
+| none: first lab (chapter slides, brief) | -             |
+
+## Change log
+| Date | Version | Change                                                 |
+|------|---------|--------------------------------------------------------|
+| TODO | 0.1     | Lab-01: charter, stakeholders, business case, mapping  |</code></pre>
+
+                        <h3 class="h6 text-uppercase text-secondary mt-3">Expected output (rendered Gantt of a good
+                            answer)</h3>
+                        <pre class="mermaid">
+gantt
+  title Process groups over the 14-week semester (Realtime Quiz)
+  dateFormat YYYY-MM-DD
+  axisFormat %d %b
+  section Initiating
+  Charter, stakeholders, business case   :i1, 2026-09-29, 7d
+  section Planning
+  PM plan and subsidiary plans           :p1, 2026-09-29, 21d
+  Re-planning after each status review   :p2, 2026-10-20, 77d
+  section Executing
+  Build to MVP (Must features)           :e1, 2026-10-13, 35d
+  MVP demo                               :milestone, m1, 2026-11-13, 0d
+  Should and Could features, hardening   :e2, 2026-11-17, 42d
+  section Monitoring and controlling
+  Weekly status, variance, change log    :m2, 2026-09-29, 98d
+  section Closing
+  Pilot with 50 students, lessons learned :c1, 2026-12-29, 7d
+</pre>
+                        <pre><code class="language-plaintext">Table excerpt:
+| Monitoring and controlling | 1-14 | weekly status meeting, schedule and
+  cost variance, risk review, change requests | status reports, change log,
+  updated baselines | Labs 05, 06, 09 (tools), every lab (practice) |
+
+Phase gates: week 1 charter signed; week 7 MVP demo passes all Must
+features live; week 13 pilot readiness: load test at 100 students green,
+data approval received, runbook handed to IT operations.</code></pre>
+
+                        <p class="mt-3"><a class="hint-btn" data-bs-toggle="collapse" href="#hint5" role="button"><i
+                                    class="bi bi-lightbulb"></i> Show hints</a></p>
+                        <div class="collapse" id="hint5">
+                            <div class="card card-body bg-body-tertiary small">
+                                <ul class="mb-0">
+                                    <li>Week n starts on 2026-09-29 plus 7 × (n - 1) days: week 4 is 2026-10-20, week 7
+                                        is 2026-11-10, week 10 is 2026-12-01, week 14 is 2026-12-29.</li>
+                                    <li>Mermaid Gantt: a milestone needs <code>:milestone, id, date, 0d</code>; task
+                                        names must not contain a colon; keep one task per line.</li>
+                                    <li>Executing starts before planning ends (week 3): that overlap is the point of the
+                                        diagram, not a mistake.</li>
+                                    <li>In <code>lab01/README.md</code> the <em>Inputs reused</em> table has one row,
+                                        "none: first lab". From Lab-02 on it names the earlier-lab files and the version
+                                        or tag you used, so a grader can see which charter a later document was built
+                                        on.</li>
+                                    <li>Relative links in Markdown are case-sensitive on the server: use lower-case
+                                        folder names exactly as in the starter.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <h3 class="h6 text-uppercase text-secondary mt-3">Acceptance checklist</h3>
+                        <div class="check-list" data-task="t5">
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="t5a"><label
+                                    class="form-check-label" for="t5a">The process-group table has five rows with weeks,
+                                    activities, outputs and the producing lab; monitoring spans 1-14 and planning has a
+                                    continuing line.</label></div>
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="t5b"><label
+                                    class="form-check-label" for="t5b">The Mermaid Gantt renders without error, has five
+                                    sections, the two milestones (week 7 demo, week 14 pilot) and overlapping
+                                    bars.</label></div>
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="t5c"><label
+                                    class="form-check-label" for="t5c"><code>lab01/README.md</code> lists every Lab-01
+                                    file, names the earlier-lab inputs reused, and has a change-log row.</label></div>
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="t5d"><label
+                                    class="form-check-label" for="t5d">Three phase gates with evidence are described;
+                                    README.md lists Lab-01 as completed.</label></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== CHALLENGE ===================== -->
+                <section class="task card mb-4 border-warning" id="challenge">
+                    <div class="card-header task-header bg-warning-subtle">
+                        <span class="task-number text-bg-warning"><i class="bi bi-star-fill"></i></span>
+                        <h2 class="h4 mb-0">Challenge: post-mortem of an IT project failure</h2>
+                        <span class="badge text-bg-danger">Hard</span>
+                        <span class="badge text-bg-light ms-auto">90–120 min · optional, extra credit</span>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="h6 text-uppercase text-secondary">Scenario</h3>
+                        <p>The Head of the IT department has read about famous IT failures and asks: "Why will ours be
+                            different?" Pick one documented public failure (Denver airport baggage system 1995, Hershey
+                            ERP 1999, FBI Virtual Case File 2005, UK NHS National Programme for IT 2011, Knight Capital
+                            2012, Healthcare.gov 2013, or another with at least two published sources) or use the
+                            fictional case below, and analyse it with this chapter's concepts. Then write one page of
+                            commitments for the Realtime Quiz project, each traceable to a line of your charter.</p>
+                        <div class="alert alert-secondary small">
+                            <strong>Fictional case (if you prefer not to research): CampusPay wallet.</strong> A
+                            university asked its IT unit to build a cashless payment app for the canteen and the library
+                            fines in one semester. The head of finance "sponsored" it by e-mail but never attended a
+                            review. The lead developer acted as PM and coder. Success was defined as "launch in
+                            September". Requirements grew from canteen payments to bus tickets and parking after a
+                            survey. No test with real card terminals was run before launch day; on day one the terminals
+                            rejected 40 % of payments, the queue in the canteen doubled, and the app was withdrawn after
+                            three days. It relaunched five months later for the canteen only.
+                        </div>
+                        <h3 class="h6 text-uppercase text-secondary">Requirements</h3>
+                        <ol class="step-list">
+                            <li>Create <code>lab01/post-mortem.md</code>. Section 1: <strong>Timeline</strong> of the
+                                case (5-8 dated or ordered events) with your sources listed (URL and date accessed) or
+                                "fictional case from Lab-01".</li>
+                            <li>Section 2: <strong>Classification and organisation</strong>: was it a project, a
+                                programme or several? Which organisational structure did the PM work in and how much
+                                authority did they have? Was there a sponsor, a charter, a PMO?</li>
+                            <li>Section 3: <strong>Success criteria</strong>: what were the stated criteria, which
+                                measurable criteria were missing, and which of the wider success dimensions (benefits,
+                                users, operations) were ignored?</li>
+                            <li>Section 4: <strong>Process groups and knowledge areas</strong>: for each of the five
+                                process groups, one sentence on what went wrong or was skipped; then the three knowledge
+                                areas most responsible, with evidence from the timeline.</li>
+                            <li>Section 5: <strong>Ethics</strong>: one decision in the case examined against
+                                responsibility, respect, fairness and honesty.</li>
+                            <li>Section 6: <strong>What our project will do differently</strong> (one page): five
+                                commitments, each in the form "We will ... (measured by ..., by week ...)", each linked
+                                to a charter line (objective id, milestone week, constraint or authority clause). Add a
+                                row to <code>lab01/README.md</code>'s change log referencing the post-mortem.</li>
+                        </ol>
+                        <h3 class="h6 text-uppercase text-secondary">Skeleton: <code>lab01/post-mortem.md</code></h3>
+                        <pre><code class="language-markdown"># Post-mortem: TODO case name (TODO year)
+
+## 1. Timeline and sources
+| # | When | Event | Source |
+|---|------|-------|--------|
+| 1 | TODO | TODO  | TODO   |
+
+## 2. Classification and organisation
+Project / programme: TODO. Structure and PM authority: TODO.
+Sponsor, charter, PMO: TODO.
+
+## 3. Success criteria
+Stated: TODO. Missing measurable criteria: TODO.
+Ignored dimensions (benefits, users, operations, team): TODO.
+
+## 4. Process groups and knowledge areas
+| Process group              | What went wrong or was skipped |
+|----------------------------|--------------------------------|
+| Initiating                 | TODO |
+| Planning                   | TODO |
+| Executing                  | TODO |
+| Monitoring and controlling | TODO |
+| Closing                    | TODO |
+Knowledge areas most responsible: TODO (3, with evidence).
+
+## 5. Ethics
+Decision examined: TODO. Responsibility / respect / fairness / honesty: TODO.
+
+## 6. What our project will do differently
+| # | Commitment (We will ...) | Measured by | By week | Charter line |
+|---|--------------------------|-------------|---------|--------------|
+| 1 | TODO | TODO | TODO | O2 / milestone 7 / constraint ... |
+| 2 | TODO | | | |
+| 3 | TODO | | | |
+| 4 | TODO | | | |
+| 5 | TODO | | | |</code></pre>
+                        <h3 class="h6 text-uppercase text-secondary mt-3">Expected output (two rows of a good section 6,
+                            CampusPay case)</h3>
+                        <pre><code class="language-plaintext">| 1 | We will run a live session with 100 simulated students and the real
+    campus Wi-Fi before the pilot | load test report, 0 errors | 12 |
+    milestone week 12, O3 latency |
+| 2 | We will hold a signed charter with a named sponsor who attends the
+    week-7 and week-13 gates | signature on charter, gate minutes | 1 |
+    section 10 approval, authority clause |
+
+Section 4 excerpt: Initiating: no charter; the head of finance never
+accepted the sponsor role, so nobody could refuse the bus-ticket scope.
+Monitoring and controlling: progress was reported as "on schedule"
+without a single end-to-end test, the invisibility trap.</code></pre>
+                        <p class="mt-3"><a class="hint-btn" data-bs-toggle="collapse" href="#hintC" role="button"><i
+                                    class="bi bi-lightbulb"></i> Show hints</a></p>
+                        <div class="collapse" id="hintC">
+                            <div class="card card-body bg-body-tertiary small">
+                                <ul class="mb-0">
+                                    <li>Slide 12 lists the cases with a one-line lesson each; your analysis must go
+                                        deeper than the slide, with sources.</li>
+                                    <li>Good public sources: government audit reports (US GAO, UK National Audit
+                                        Office), the SEC order on Knight Capital, university case studies. Wikipedia is
+                                        a starting point, not a source; cite what it cites.</li>
+                                    <li>A commitment without a measure and a week is a wish. "We will test more" fails;
+                                        "We will keep line coverage at 80 % or above, checked by CI on every merge, from
+                                        week 4" passes.</li>
+                                    <li>Link every commitment to a charter element you wrote in Task 2. If none fits,
+                                        your charter has a gap: fix the charter (and bump it to version 1.1 in the
+                                        change log).</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <h3 class="h6 text-uppercase text-secondary mt-3">Acceptance checklist</h3>
+                        <div class="check-list" data-task="tc">
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="tca"><label
+                                    class="form-check-label" for="tca">Timeline with 5-8 events and sources (or the
+                                    fictional case named); classification, structure, sponsor and charter status stated
+                                    with evidence.</label></div>
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="tcb"><label
+                                    class="form-check-label" for="tcb">Success criteria analysed: stated, missing
+                                    measurable ones, and ignored wider dimensions.</label></div>
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="tcc"><label
+                                    class="form-check-label" for="tcc">One sentence per process group, three knowledge
+                                    areas with evidence, and one ethics decision examined against the four
+                                    values.</label></div>
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="tcd"><label
+                                    class="form-check-label" for="tcd">Five commitments, each with a measure, a week and
+                                    a charter line; the change log in <code>lab01/README.md</code> references the
+                                    post-mortem.</label></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== RUBRIC ===================== -->
+                <section class="task card mb-4" id="rubric">
+                    <div class="card-header">
+                        <h2 class="h4 mb-0"><i class="bi bi-clipboard-check"></i> Grading rubric</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered align-middle">
+                                <thead class="table-active">
+                                    <tr>
+                                        <th>Component</th>
+                                        <th>Points</th>
+                                        <th>Full marks when…</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Task 1 · Classification</td>
+                                        <td>10</td>
+                                        <td>Ten rows correctly classified with a deciding fact each; grey zones and
+                                            hand-over sections present.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Task 2 · Project charter</td>
+                                        <td>25</td>
+                                        <td>Five SMART objectives with numbers and weeks; scope in/out as deliverables;
+                                            seven milestones with process groups; budget with calculation lines in hours
+                                            and USD; assumptions, constraints, authority, approval.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Task 3 · Stakeholder list</td>
+                                        <td>15</td>
+                                        <td>8-12 complete rows including sponsor and PM, every category covered, H/M/L
+                                            ratings, expectations as sentences; priority and veto stakeholders
+                                            explained.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Task 4 · Business case</td>
+                                        <td>20</td>
+                                        <td>Quantified problem, three options, CSV with formulas that reconcile, net
+                                            annual benefit and payback for B and C, sensitivity, risks, recommendation
+                                            with a gate.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Task 5 · Process groups and lab record</td>
+                                        <td>20</td>
+                                        <td>Five-row table, rendering Gantt with overlaps and milestones, phase gates,
+                                            <code>lab01/README.md</code> with document control, a complete file table,
+                                            inputs reused and a change log.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Document quality</td>
+                                        <td>10</td>
+                                        <td>Markdown renders (tables, links), consistent numbers across charter,
+                                            business case and mapping, no spelling noise, meaningful commit messages per
+                                            task.</td>
+                                    </tr>
+                                    <tr class="table-warning">
+                                        <td>★ Challenge (extra credit)</td>
+                                        <td>+20</td>
+                                        <td>Sourced timeline, analysis by structure, criteria, process groups, knowledge
+                                            areas and ethics; five measurable commitments traced to the charter.</td>
+                                    </tr>
+                                    <tr class="fw-semibold">
+                                        <td>Total</td>
+                                        <td>100 (+20)</td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="alert alert-danger small mb-0"><strong>Automatic deductions:</strong>
+                            -5 per charter objective whose success criterion has no number or no week (max -15) ·
+                            -5 if the budget summary lacks either the person-hours or the USD calculation lines ·
+                            -5 if the stakeholder list has fewer than 8 rows or misses the sponsor or the project
+                            manager ·
+                            -10 if the business case has no numeric comparison of at least two options (net annual
+                            benefit or payback) ·
+                            -5 if an amount in <code>business-case.csv</code> does not match its written formula ·
+                            -5 if <code>lab01/README.md</code> does not list every Lab-01 file or has no change-log row
+                            ·
+                            -3 per initiative in Task 1 classified without a justification ·
+                            -5 if a charter milestone contradicts the Gantt or the business case (for example a
+                            different MVP week).
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== SUBMISSION ===================== -->
+                <section class="task card mb-5" id="submission">
+                    <div class="card-header">
+                        <h2 class="h4 mb-0"><i class="bi bi-cloud-upload"></i> Submission</h2>
+                    </div>
+                    <div class="card-body">
+                        <ol class="step-list">
+                            <li>Repository layout after this lab:
+                                <pre><code class="language-plaintext">pm-plan-&lt;yourname&gt;/
+├── README.md
+└── lab01/
+    ├── task1-classification.md
+    ├── project-charter.md
+    ├── stakeholders.csv
+    ├── stakeholders.md
+    ├── business-case.md
+    ├── business-case.csv
+    ├── process-groups.md
+    ├── README.md
+    ├── organisation.png            (optional, Task 3)
+    └── post-mortem.md              (challenge)</code></pre>
+                            </li>
+                            <li>Self-check from a clean checkout (Git Bash or any POSIX shell). Every count must match:
+                                <pre><code class="language-bash">grep -c "^| O[1-5]" lab01/project-charter.md          # 5 objectives
+tail -n +2 lab01/stakeholders.csv | wc -l               # 8 to 12 rows
+grep -c "^| [B-C]," lab01/business-case.csv             # 0: CSV has no pipes
+grep -c "^| lab01/" lab01/README.md                     # 7 or more files listed
+grep -c "^  section" lab01/process-groups.md            # 5 Gantt sections
+grep -n "TODO" lab01/*.md                               # nothing left</code></pre>
+                            </li>
+                            <li>Preview <code>process-groups.md</code> once in your editor: the Gantt must render, and
+                                <code>lab01/README.md</code> must show its four tables (document control, files, inputs
+                                reused, change log).</li>
+                            <li>Branch <code>lab-01</code>, merge request titled <code>Lab-01 – &lt;your
+                                    name&gt;</code>, description listing the files and, if done, the challenge case you
+                                analysed.</li>
+                        </ol>
+                        <div class="d-flex flex-wrap gap-2 mt-3">
+                            <a class="btn btn-outline-primary" href="Chapter-01.html"><i class="bi bi-easel"></i> Back
+                                to Chapter 01 slides</a>
+                            <a class="btn btn-outline-secondary" href="Chapter-01.html#25"><i
+                                    class="bi bi-patch-question"></i> Retake the chapter quiz</a>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/java.min.js"></script>
+    <script>
+        (function () {
+            'use strict';
+            const KEY = 'pm-lab01-checklist'; // unique per lab
+
+            /* Theme (shared key with the chapter decks) */
+            const root = document.documentElement;
+            try {
+                const saved = localStorage.getItem('se-theme') || localStorage.getItem('ch01-theme');
+                if (saved) root.setAttribute('data-bs-theme', saved);
+            } catch (e) {}
+
+            function renderMermaid() {
+                if (!document.querySelector('.mermaid')) return;
+                const dark = root.getAttribute('data-bs-theme') === 'dark';
+                const run = () => {
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: dark ? 'dark' : 'default',
+                        securityLevel: 'loose'
+                    });
+                    mermaid.run({
+                        querySelector: '.mermaid'
+                    });
+                };
+                if (window.mermaid) {
+                    run();
+                    return;
+                }
+                const s = document.createElement('script');
+                s.src = 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js';
+                s.onload = run;
+                document.head.appendChild(s);
+            }
+            document.querySelectorAll('.mermaid').forEach(m => {
+                m.dataset.src = m.textContent;
+            });
+            renderMermaid();
+            document.getElementById('btnTheme').addEventListener('click', () => {
+                const t = root.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+                root.setAttribute('data-bs-theme', t);
+                try {
+                    localStorage.setItem('se-theme', t);
+                    localStorage.setItem('ch01-theme', t);
+                } catch (e) {}
+                document.querySelectorAll('.mermaid').forEach(m => {
+                    m.removeAttribute('data-processed');
+                    m.textContent = m.dataset.src;
+                });
+                renderMermaid();
+            });
+
+            /* Highlight + copy buttons */
+            hljs.highlightAll();
+            document.querySelectorAll('pre > code').forEach(code => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'btn btn-sm btn-secondary copy-btn';
+                btn.textContent = 'Copy';
+                btn.addEventListener('click', async () => {
+                    try {
+                        await navigator.clipboard.writeText(code.innerText);
+                        btn.textContent = 'Copied!';
+                    } catch (e) {
+                        btn.textContent = 'Failed';
+                    }
+                    setTimeout(() => btn.textContent = 'Copy', 1200);
+                });
+                code.parentElement.appendChild(btn);
+            });
+
+            /* Checklist persistence + progress */
+            const boxes = Array.from(document.querySelectorAll('.check-list input[type=checkbox]'));
+            let state = {};
+            try {
+                state = JSON.parse(localStorage.getItem(KEY) || '{}');
+            } catch (e) {
+                state = {};
+            }
+            boxes.forEach(b => {
+                b.checked = !!state[b.id];
+            });
+            const bar = document.getElementById('progressBar'),
+                txt = document.getElementById('progressText');
+
+            function updateProgress() {
+                const done = boxes.filter(b => b.checked).length;
+                bar.style.width = (done / boxes.length * 100) + '%';
+                txt.textContent = done + ' / ' + boxes.length;
+            }
+            boxes.forEach(b => b.addEventListener('change', () => {
+                state[b.id] = b.checked;
+                try {
+                    localStorage.setItem(KEY, JSON.stringify(state));
+                } catch (e) {}
+                updateProgress();
+            }));
+            document.getElementById('resetProgress').addEventListener('click', () => {
+                if (!confirm('Clear all ticked checklist items?')) return;
+                boxes.forEach(b => b.checked = false);
+                state = {};
+                try {
+                    localStorage.removeItem(KEY);
+                } catch (e) {}
+                updateProgress();
+            });
+            updateProgress();
+
+            /* Sidebar scroll-spy */
+            const links = Array.from(document.querySelectorAll('#sideNav .nav-link'));
+            const sections = links.map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(en => {
+                    if (en.isIntersecting) links.forEach(l => l.classList.toggle('active', l
+                        .getAttribute('href') === '#' + en.target.id));
+                });
+            }, {
+                rootMargin: '-40% 0px -55% 0px'
+            });
+            sections.forEach(s => observer.observe(s));
+        })();
+    </script>
+
+    <script data-gic="hidden-labs">
+        (function () {
+            var cfg = {
+                "base": "/courses/it-project-management/",
+                "folders": ["01-IntroductionToProjectManagement", "02-TripleConstraint",
+                    "03-LifeCycleAndMethodology", "04-PlanningAndScopeManagement",
+                    "05-SchedulingAndTimeManagement", "06-CostAndBudgetManagement", "07-QualityManagement",
+                    "08-HumanResourceManagement", "09-RiskManagement", "10-CommunicationManagement",
+                    "11-StakeholderManagement", "12-ProcurementManagement"
+                ],
+                "open": ["/courses/it-project-management/01-IntroductionToProjectManagement/Lab-01.html"],
+                "hidden": ["/courses/it-project-management/02-TripleConstraint/Lab-02.html",
+                    "/courses/it-project-management/03-LifeCycleAndMethodology/Lab-03.html",
+                    "/courses/it-project-management/04-PlanningAndScopeManagement/Lab-04.html",
+                    "/courses/it-project-management/05-SchedulingAndTimeManagement/Lab-05.html",
+                    "/courses/it-project-management/06-CostAndBudgetManagement/Lab-06.html",
+                    "/courses/it-project-management/07-QualityManagement/Lab-07.html",
+                    "/courses/it-project-management/08-HumanResourceManagement/Lab-08.html",
+                    "/courses/it-project-management/09-RiskManagement/Lab-09.html",
+                    "/courses/it-project-management/10-CommunicationManagement/Lab-10.html",
+                    "/courses/it-project-management/11-StakeholderManagement/Lab-11.html",
+                    "/courses/it-project-management/12-ProcurementManagement/Lab-12.html"
+                ]
+            };
+            var LAB = /^(lab|labs|practical|exercises?|tp)(?:[-_ .]?\d+)?(?:[-_ .].*)?$/i;
+            var lower = function (s) {
+                return String(s).toLowerCase();
+            };
+            var base = lower(cfg.base),
+                folders = {},
+                openFolders = {},
+                hidden = {};
+            cfg.folders.forEach(function (f) {
+                folders[lower(f)] = true;
+            });
+            cfg.open.forEach(function (p) {
+                openFolders[lower(p).substring(base.length).split('/')[0]] = true;
+            });
+            cfg.hidden.forEach(function (p) {
+                hidden[lower(p)] = true;
+            });
+
+            function hiddenLab(href) {
+                var u;
+                try {
+                    u = new URL(href, location.href);
+                } catch (e) {
+                    return false;
+                }
+                if (u.origin !== location.origin) {
+                    return false;
+                }
+                var p = u.pathname;
+                try {
+                    p = decodeURIComponent(p);
+                } catch (e) {
+                    /* keep it encoded */ }
+                p = lower(p);
+                if (hidden[p]) {
+                    return true;
+                }
+                if (p.indexOf(base) !== 0) {
+                    return false;
+                }
+                var parts = p.substring(base.length).split('/');
+                return parts.length > 1 && folders[parts[0]] === true && !openFolders[parts[0]] && LAB.test(parts[
+                    1]);
+            }
+
+            function gone(el) {
+                el.style.setProperty('display', 'none', 'important');
+                el.setAttribute('aria-hidden', 'true');
+                el.setAttribute('data-lab-hidden', '');
+            }
+
+            function onlyHidden(el) {
+                for (var n = el.firstChild; n; n = n.nextSibling) {
+                    if (n.nodeType === 3 && n.textContent.trim() !== '') {
+                        return false;
+                    }
+                    if (n.nodeType === 1 && !n.hasAttribute('data-lab-hidden')) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            function hide(a) {
+                var parent = a.parentElement;
+                if (parent && parent.tagName === 'TD') {
+                    var span = document.createElement('span');
+                    span.textContent = a.textContent;
+                    span.setAttribute('data-lab-text', '');
+                    parent.replaceChild(span, a);
+                    return;
+                }
+                gone(a);
+                a.setAttribute('tabindex', '-1');
+                if (parent && parent !== document.body && onlyHidden(parent) &&
+                    (parent.tagName === 'LI' || /(^|\s)(btn-group|btn-toolbar|d-flex|d-grid|d-inline-flex)(\s|$)/
+                        .test(parent.className))) {
+                    gone(parent);
+                }
+            }
+
+            function scan(node) {
+                if (!node || node.nodeType !== 1) {
+                    return;
+                }
+                var links = node.tagName === 'A' ? [node] : node.querySelectorAll('a[href]');
+                for (var i = 0; i < links.length; i++) {
+                    var a = links[i];
+                    if (a.hasAttribute('href') && !a.hasAttribute('data-lab-hidden') && hiddenLab(a.getAttribute(
+                            'href'))) {
+                        hide(a);
+                    }
+                }
+            }
+
+            scan(document.documentElement);
+            new MutationObserver(function (mutations) {
+                mutations.forEach(function (m) {
+                    if (m.type === 'attributes') {
+                        scan(m.target);
+                    } else {
+                        m.addedNodes.forEach(scan);
+                    }
+                });
+            }).observe(document.documentElement, {
+                childList: true,
+                subtree: true,
+                attributes: true,
+                attributeFilter: ['href']
+            });
+        })();
+    </script>
+
+    <style data-gic="lab-bar">
+        body {
+            padding-bottom: 5.5rem !important
+        }
+
+        @media (max-width:575.98px) {
+            body {
+                padding-bottom: 9rem !important
+            }
+        }
+
+        .gic-lab-bar {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1040;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: .5rem 1rem;
+            margin: 0;
+            padding: .6rem 1rem;
+            background: #111827;
+            color: #f9fafb;
+            border-top: 3px solid #0d6efd;
+            font: 14px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Khmer", "Khmer OS", sans-serif;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, .3);
+            text-align: left
+        }
+
+        .gic-lab-bar__info {
+            flex: 1 1 16rem;
+            min-width: 0
+        }
+
+        .gic-lab-bar__title {
+            display: block;
+            font-weight: 600;
+            overflow-wrap: anywhere
+        }
+
+        .gic-lab-bar__meta {
+            display: block;
+            color: #d1d5db;
+            font-size: 13px
+        }
+
+        .gic-lab-bar__status {
+            display: inline-block;
+            margin-right: .5rem;
+            padding: .05rem .5rem;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600
+        }
+
+        .gic-lab-bar__btn {
+            display: inline-block;
+            padding: .45rem .9rem;
+            border-radius: .375rem;
+            background: #0b5ed7;
+            color: #fff !important;
+            font-weight: 600;
+            text-decoration: none !important;
+            white-space: nowrap
+        }
+
+        .gic-lab-bar__btn:hover {
+            background: #0a58ca
+        }
+
+        .gic-lab-bar__btn:focus-visible {
+            outline: 2px solid #fff;
+            outline-offset: 2px
+        }
+
+        @media print {
+            .gic-lab-bar {
+                display: none
+            }
+
+            body {
+                padding-bottom: 0 !important
+            }
+        }
+    </style>
+    <aside class="gic-lab-bar" data-gic="lab-bar" data-role="student" lang="en" aria-label="Lab assignment">
+        <div class="gic-lab-bar__info"><span class="gic-lab-bar__title">Lab 01 · Introduction to project
+                management</span><span class="gic-lab-bar__meta"><span class="gic-lab-bar__status"
+                    data-status="NOT_SUBMITTED" style="background:#e5e7eb;color:#111827">Not submitted</span>Deadline:
+                <time datetime="2026-10-26T23:59+07:00">Oct 26, 2026, 11:59 PM</time></span></div><a
+            class="gic-lab-bar__btn" href="/me/courses/labs/9">Submit your work</a>
+    </aside>
+</body>
+
+</html>
