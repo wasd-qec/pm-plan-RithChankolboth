@@ -2,7 +2,7 @@
 
 | Field   | Value                     |
 |---------|---------------------------|
-| Version | 0.1                       |
+| Version | 0.2                       |
 | Date    | 2026-09-29                |
 | Author  | Rith Chankolboth          |
 | Status  | Complete                  |
@@ -18,6 +18,7 @@
 | lab01/business-case.csv       | cost-benefit lines, spreadsheet formulas, net annual benefit, and payback |
 | lab01/process-groups.md       | 14-week process group schedule mapping, Mermaid Gantt, and phase gates |
 | lab01/README.md               | lab record with document control, file manifest, inputs reused, and change log |
+| lab01/post-mortem.md          | challenge: failure post-mortem on CampusPay and 5 project commitments |
 
 ## Inputs reused
 | Input                                   | Version / tag |
@@ -28,3 +29,4 @@
 | Date       | Version | Change                                                |
 |------------|---------|-------------------------------------------------------|
 | 2026-09-29 | 0.1     | Lab-01: charter, stakeholders, business case, mapping |
+| 2026-09-29 | 0.2     | Lab-01: challenge failure post-mortem added           |
