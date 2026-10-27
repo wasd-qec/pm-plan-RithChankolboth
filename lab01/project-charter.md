@@ -13,17 +13,18 @@ Currently, instructors in the IT department face high manual grading workloads a
 
 ## 2. Objectives and success criteria
 
-| #   | Objective (what will be true)                                     | Success criterion (number + week)                                      |
-| --- | ----------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| O1  | Deliver core MVP functionality for authoring and live quizzing    | 100% of Must features operational with 0 blocking defects by week 7    |
-| O2  | Conduct a live pilot session in a real lecture environment        | 50 active student participants completing the quiz session by week 14  |
-| O3  | Maintain responsive real-time broadcast delivery during sessions  | Broadcast latency <= 500 ms at 95th percentile measured in week 14     |
-| O4  | Support high concurrent session capacity on target VPS resources  | 20 concurrent sessions of 100 participants on 2 vCPU / 2 GB by week 12 |
-| O5  | Maintain rigorous code quality and automated testing standards    | Automated line coverage >= 80% with green CI on all merges by week 13  |
+| #   | Objective (what will be true)                                    | Success criterion (number + week)                                      |
+| --- | ---------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| O1  | Deliver core MVP functionality for authoring and live quizzing   | 100% of Must features operational with 0 blocking defects by week 7    |
+| O2  | Conduct a live pilot session in a real lecture environment       | 50 active student participants completing the quiz session by week 14  |
+| O3  | Maintain responsive real-time broadcast delivery during sessions | Broadcast latency <= 500 ms at 95th percentile measured in week 14     |
+| O4  | Support high concurrent session capacity on target VPS resources | 20 concurrent sessions of 100 participants on 2 vCPU / 2 GB by week 12 |
+| O5  | Maintain rigorous code quality and automated testing standards   | Automated line coverage >= 80% with green CI on all merges by week 13  |
 
 ## 3. High-level scope
 
 In scope:
+
 - User authentication and role management module (instructor, student, and guest access)
 - Quiz authoring web interface for creating and configuring multiple-choice questions
 - Real-time session execution engine with authoritative server-side countdown timers
@@ -32,6 +33,7 @@ In scope:
 - Real-time notification system for quiz events and question transitions
 
 Out of scope:
+
 - Native mobile applications for iOS or Android platforms
 - Open-ended and free-text question formats (only multiple choice supported)
 - Built-in live audio or video streaming and conferencing features
@@ -53,11 +55,13 @@ Out of scope:
 ## 5. Budget summary
 
 Effort:
+
 - Student developers: 4 students x 14 weeks x 8 h/week = 448 h
 - Project manager: 1 PM x 14 weeks x 3 h/week = 42 h
 - Total effort: 490 h
 
 Cash:
+
 - Linode VPS hosting: 4 months x 25 USD = 100 USD
 - Custom domain registration: 15 USD
 - Development & deployment testing tools: 60 USD
@@ -91,5 +95,5 @@ Cash:
 
 ## 10. Approval
 
-Sponsor: Head of the IT Department  Date: 2026-09-29  
-PM:      Supervising Lecturer       Date: 2026-09-29  
+Sponsor: Head of the IT Department  Date: 2026-09-29
+PM:      Supervising Lecturer       Date: 2026-09-29
